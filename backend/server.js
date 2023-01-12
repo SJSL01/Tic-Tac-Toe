@@ -40,12 +40,12 @@ app.post("/api/login", async (req, res) => {
     try {
         const { username, password } = req.body
         const { users } = await serverClient.queryUsers({ name: username })
-        console.log(users);
+        // console.log(users);
         if (users.length === 0) {
             return res.status(400).json(`No user with username ${username}`)
         }
         const isPasswordMatch = await bcrypt.compare(password, users[0].password)
-
+        
 
         if (isPasswordMatch) {
             const token = serverClient.createToken(users[0].id)
@@ -65,12 +65,11 @@ app.post("/api/login", async (req, res) => {
     }
 })
 
-app.get("/api/getActiveUsers", async (req, res) => {
+app.post("/api/getActiveUsers", async (req, res) => {
     try {
         let { users } = await serverClient.queryUsers({})
-        console.log(users)
         users = users.filter(user => {
-            return user.online
+            return (user.name != req.body.name && user.online)
         });
         res.status(200).json(users)
 
@@ -80,6 +79,20 @@ app.get("/api/getActiveUsers", async (req, res) => {
     }
 })
 
+
+// app.delete("/api/delete", async (req, res) => {
+//     try {
+//         const deleted = await serverClient.deleteUsers([
+//             "c3df70e3-5389-4716-9639-6bc1276ada0c"
+//         ], {
+//             user: "hard",
+//             messages: "hard"
+//         })
+//         res.json(deleted)
+//     } catch (error) {
+//         res.json(error.message)
+//     }
+// })
 
 app.listen(process.env.PORT, () => {
     console.log(`service up on port ${process.env.PORT}`);

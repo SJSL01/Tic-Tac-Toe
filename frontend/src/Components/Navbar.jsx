@@ -8,8 +8,10 @@ export default function Navbar() {
 
     const handleLogout = () => {
         useAuth.cookies.remove("token")
-        useAuth.cookies.remove("name")
+        useAuth.cookies.remove("username")
         useAuth.cookies.remove("userID")
+        useAuth.cookies.remove("password")
+        useAuth.client.disconnectUser()
         useAuth.setLoggedIn(false)
         navigate("/", { replace: true })
     }

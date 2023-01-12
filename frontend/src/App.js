@@ -6,20 +6,23 @@ import Game from "./Components/Game";
 import Login from "./Components/Login";
 import Signup from "./Components/SignUp";
 import { AuthContextProvider } from "./Context/AuthContext";
+import { ChannelContextProvider } from "./Context/ChannelContext";
 
 function App() {
 
   return (
     <BrowserRouter>
       <AuthContextProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/play" element={<input />} />
-          </Routes>
-        </Layout>
+        <ChannelContextProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/welcome" element={<Welcome />} />
+              <Route path="/play" element={<Game />} />
+            </Routes>
+          </Layout>
+        </ChannelContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   );

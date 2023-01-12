@@ -2,16 +2,27 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import "../Styles/Game.css"
 import { useRef } from "react";
+import { Channel } from "../Context/ChannelContext";
 
 
 export default function Game() {
 
-  const id = useRef()
-  const location = useLocation();
-  const navigate = useNavigate();
+  const useChannel = Channel()
 
-  const roomId = location.state.roomId;
+  const navigate = useNavigate()
 
+  const [playWaiting, setPlayerWaiting] = useState(useChannel.channel?.state?.watcher_count === 2)
+
+  useEffect(() => {
+    console.log(useChannel.channel);
+    if (!useChannel.channel) {
+      navigate("/welcome", { replace: true })
+    }
+  }, [])
+
+  useChannel.channel?.on("user.watching.start", e => {
+    setPlayerWaiting(e.watcher_count === 2)
+  })
 
   const [player, Setplayer] = useState(null)
 
@@ -82,70 +93,71 @@ export default function Game() {
 
 
   return (
+    <>
+      {playWaiting ? <div className="main-container">
 
-    <div className="main-container">
-
-      <div className="room" ref={id} onClick={async () => { await navigator.clipboard.writeText(id.current.innerText) }}>
-        {roomId}</div>
-
-      <div onClick={() => {
-        Setplayer("X")
-      }} className="player1">
-        player 1
-        <span>X</span>
-      </div>
-      {player && <div className="game-container">
-
-        <div className="top">
-
-          <div className="box" onClick={() => { handleClick(0) }}>
-            {tiles[0] !== "" && <img src={tiles[0] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-          <div className="box" onClick={() => { handleClick(1) }}>
-            {tiles[1] !== "" && <img src={tiles[1] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-          <div className="box" onClick={() => { handleClick(2) }}>
-            {tiles[2] !== "" && <img src={tiles[2] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-
+        <div onClick={() => {
+          Setplayer("X")
+        }} className="player1">
+          player 1
+          <span>X</span>
         </div>
+        {player && <div className="game-container">
 
+          <div className="top">
 
-        <div className="middle">
+            <div className="box" onClick={() => { handleClick(0) }}>
+              {tiles[0] !== "" && <img src={tiles[0] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+            <div className="box" onClick={() => { handleClick(1) }}>
+              {tiles[1] !== "" && <img src={tiles[1] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+            <div className="box" onClick={() => { handleClick(2) }}>
+              {tiles[2] !== "" && <img src={tiles[2] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
 
-          <div className="box" onClick={() => { handleClick(3) }}>
-            {tiles[3] !== "" && <img src={tiles[3] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
           </div>
-          <div className="box" onClick={() => { handleClick(4) }}>
-            {tiles[4] !== "" && <img src={tiles[4] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-          <div className="box" onClick={() => { handleClick(5) }}>
-            {tiles[5] !== "" && <img src={tiles[5] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+
+
+          <div className="middle">
+
+            <div className="box" onClick={() => { handleClick(3) }}>
+              {tiles[3] !== "" && <img src={tiles[3] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+            <div className="box" onClick={() => { handleClick(4) }}>
+              {tiles[4] !== "" && <img src={tiles[4] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+            <div className="box" onClick={() => { handleClick(5) }}>
+              {tiles[5] !== "" && <img src={tiles[5] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+
           </div>
 
+
+          <div className="bottom">
+
+            <div className="box" onClick={() => { handleClick(6) }}>
+              {tiles[6] !== "" && <img src={tiles[6] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+            <div className="box" onClick={() => { handleClick(7) }}>
+              {tiles[7] !== "" && <img src={tiles[7] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+            <div className="box" onClick={() => { handleClick(8) }}>
+              {tiles[8] !== "" && <img src={tiles[8] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
+            </div>
+
+          </div>
+        </div>}
+        <div onClick={() => {
+          Setplayer("O")
+        }} className="player2">
+          player 2
+          <span>O</span>
         </div>
-
-
-        <div className="bottom">
-
-          <div className="box" onClick={() => { handleClick(6) }}>
-            {tiles[6] !== "" && <img src={tiles[6] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-          <div className="box" onClick={() => { handleClick(7) }}>
-            {tiles[7] !== "" && <img src={tiles[7] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-          <div className="box" onClick={() => { handleClick(8) }}>
-            {tiles[8] !== "" && <img src={tiles[8] === "X" ? "./cross.png" : "./circle.png"} alt="" />}
-          </div>
-
-        </div>
-      </div>}
-      <div onClick={() => {
-        Setplayer("O")
-      }} className="player2">
-        player 2
-        <span>O</span>
-      </div>
-    </div >
+      </div >
+        :
+        <>
+          <h1>WAITING</h1>
+        </>}    </>
   )
 }
