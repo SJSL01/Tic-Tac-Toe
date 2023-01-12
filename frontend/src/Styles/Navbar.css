@@ -1,0 +1,19 @@
+nav {
+    background-color: rgb(0, 0, 0);
+    color: aqua;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-links li{
+    margin: 0 3vw;
+}
+
+nav ul li {
+    list-style: none;
+}

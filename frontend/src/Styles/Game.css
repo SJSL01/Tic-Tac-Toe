@@ -1,0 +1,53 @@
+.main-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+img {
+    width: 80%;
+}
+
+.game-container .top,
+.middle,
+.bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-container .top div,
+.middle div,
+.bottom div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1vh;
+    height: 10vw;
+    width: 10vw;
+    box-shadow: 3px 5px 7px black, -3px 5px 7px black;
+    background-color: rgba(142, 142, 142, 0.441);
+}
+
+.room {
+    position: absolute;
+    top: 10%
+}
+
+@media (hover:hover) {
+
+    .game-container .top div,
+    .middle div,
+    .bottom div {
+        cursor: pointer;
+    }
+}
